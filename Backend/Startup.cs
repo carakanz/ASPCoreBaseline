@@ -1,16 +1,17 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
+using Microsoft.OpenApi.Models;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace Backend
 {
@@ -26,15 +27,26 @@ namespace Backend
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.Configure<Models.DatabaseSettings>(
-            Configuration.GetSection(nameof(Models.DatabaseSettings)));
+            // Read settings
+            var databaseSettings = Configuration.GetSection(nameof(Models.DatabaseSettings));
+            services.Configure<Models.DatabaseSettings>(databaseSettings);
 
             services.AddSingleton<Models.IDatabaseSettings>(sp =>
                 sp.GetRequiredService<IOptions<Models.DatabaseSettings>>().Value);
 
+            // Add MongoDB GridFS
             services.AddSingleton<Services.DocumentService>();
 
+            // Add MySql
+            services.AddDbContext<Models.ApplicationContext>(options =>
+               options.UseMySql(databaseSettings["MySqlConnection"]));
+
+
             services.AddControllers();
+            services.AddSwaggerGen(c =>
+            {
+                c.SwaggerDoc("v1", new OpenApiInfo { Title = "Backend", Version = "v1" });
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -43,9 +55,9 @@ namespace Backend
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
+                app.UseSwagger();
+                app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "Backend v1"));
             }
-
-            app.UseHttpsRedirection();
 
             app.UseRouting();
 
