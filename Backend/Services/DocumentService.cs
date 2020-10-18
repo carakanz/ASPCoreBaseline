@@ -13,7 +13,7 @@ namespace Backend.Services
     {
         private readonly IGridFSBucket _documents;
 
-        public DocumentService(Models.IDatabaseSettings settings)
+        public DocumentService(Models.IDatabaseOptions settings)
         {
             var client = new MongoClient(settings.MongoDBConnection);
             var database = client.GetDatabase(settings.MongoDBName);

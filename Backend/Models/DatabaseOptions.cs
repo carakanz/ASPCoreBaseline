@@ -5,14 +5,14 @@ using System.Threading.Tasks;
 
 namespace Backend.Models
 {
-    public class DatabaseSettings : IDatabaseSettings
+    public class DatabaseOptions : IDatabaseOptions
     {
         public string MySqlConnection { get; set; }
         public string MongoDBConnection { get; set; }
         public string MongoDBName { get; set; }
     }
 
-    public interface IDatabaseSettings
+    public interface IDatabaseOptions
     {
         string MySqlConnection { get; set; }
         string MongoDBConnection { get; set; }
