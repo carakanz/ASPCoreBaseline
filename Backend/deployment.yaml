@@ -1,26 +1,22 @@
 ﻿apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: ASPCoreBaseline-deployment
-  namespace: ASPCoreBaseline
+  name: asp-core-baseline-backend-deployment
+  namespace: asp-core-baseline
 spec:
-  # сколько подов поднять (инстансов запущенных приложений)
   replicas: 2
-
-  # селектор решает, на какие шаблоны распространяется деплой
   selector:
     matchLabels:
-      app: ASPCoreBaseline-deployment
+      app: asp-core-baseline-backend-deployment
   template:
     metadata:
-      namespace: bcs
+      namespace: asp-core-baseline
       labels:
-        # по этой метке ищет selector в kind: Service
-        app: ASPCoreBaseline-deployment
+        app: asp-core-baseline-backend-deployment
     spec:
       containers:
-        - name: ASPCoreBaseline-deployment
-          image: cr.yandex/crp50ntveojf77o60dde/backend:__VERSION__
+        - name: asp-core-baseline-backend-deployment
+          image: localhost:5000/backend:latest
           imagePullPolicy: Always
           ports:
           - name: http
