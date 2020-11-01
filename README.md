@@ -2,7 +2,7 @@
 
 Порядок действий
 1) Включить docker и kubernetes в docker desktop
-2) Запустить регистр контейнеров [this subtext](DockerRegistry/README.md)
+2) Запустить регистр контейнеров [(инструкция)](DockerRegistry)
 3) Запустить админку kubernetes
     1) Установить ```kubectl apply -f https://raw.githubusercontent.com/kubernetes/dashboard/v2.0.4/aio/deploy/recommended.yaml```
     2) Запустить ```kubectl proxy```
