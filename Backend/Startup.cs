@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -121,6 +122,15 @@ namespace Backend
 
             app.UseSwagger();
             app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "Backend v1"));
+
+            //app.UseStatusCodePages(async context =>
+            //{
+            //    context.HttpContext.Response.ContentType = "text/plain";
+
+            //    await context.HttpContext.Response.WriteAsync(
+            //        "Status code page, status code: " +
+            //        context.HttpContext.Request.Host + " ::: " + context.HttpContext.Request.Path);
+            //});
 
             app.UseStatusCodePagesWithRedirects("/swagger/index.html");
             app.UseRouting();

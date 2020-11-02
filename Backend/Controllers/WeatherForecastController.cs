@@ -35,5 +35,11 @@ namespace Backend.Controllers
             })
             .ToArray();
         }
+
+        [HttpGet("get/{name}")]
+        public string Get(string name)
+        {
+            return HttpContext.Request.Host + " :::: " + name;
+        }
     }
 }
